@@ -67,6 +67,16 @@ The following options are available:
 - `JIRA_COMPONENT_IDS`: IDs (comma-separated) of components to assign to
                                   issues.
 
+You can use the `issue-info.js` script in this repo to get the project,
+    issuetype, and component IDs for a given issue.
+
+```
+node issue-info.js FEATURE-1234
+```
+
+This will print out the envvars that you will need to set for
+microfeedback-jira.
+
 ## Development
 
 * Fork and clone this repo. `cd` into the project directory.
