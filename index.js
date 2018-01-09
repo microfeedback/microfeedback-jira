@@ -165,4 +165,5 @@ module.exports = microfeedback(JIRABackend, {
   version: pkg.version,
   jiraHost: process.env.JIRA_HOST,
   jiraProjectID: process.env.JIRA_PROJECT_ID,
+  jiraIssueTypeID: process.env.JIRA_ISSUETYPE_ID,
 });
