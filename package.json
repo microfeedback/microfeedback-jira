@@ -37,7 +37,6 @@
     "xo": "^0.18.2"
   },
   "dependencies": {
-    "dotenv": "^4.0.0",
     "jira-client": "^6.4.1",
     "micro": "^9.0.0",
     "microfeedback-core": "^1.2.1",

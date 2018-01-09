@@ -1,4 +1,3 @@
-require('dotenv').config();
 const assert = require('assert');
 const JiraApi = require('jira-client');
 const microfeedback = require('microfeedback-core');
