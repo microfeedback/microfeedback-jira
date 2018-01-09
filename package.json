@@ -68,7 +68,9 @@
     "env": [
       "JIRA_USERNAME",
       "JIRA_PASSWORD",
-      "JIRA_HOST"
+      "JIRA_HOST",
+      "JIRA_PROJECT_ID",
+      "JIRA_ISSUETYPE_ID"
     ],
     "alias": "microfeedback-jira"
   }
