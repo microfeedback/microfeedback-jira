@@ -72,6 +72,8 @@ h3. Extra information
 {{&extraTable}}
 {{/extraTable}}
 
+----
+
 Reported via _[{{pkg.name}}|{{&pkg.repository}}] v{{pkg.version}}_.
 `;
 mustache.parse(issueTemplate);
