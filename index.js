@@ -79,7 +79,7 @@ Reported via _[{{pkg.name}}|{{&pkg.repository}}] v{{pkg.version}}_.
 mustache.parse(issueTemplate);
 
 const makeIssue = (
-  {body, projectID, issueTypeID, componentIDs, screenshotURL, extra},
+  {body, projectID, issueTypeID, componentIDs, priorityID, screenshotURL, extra},
   req
 ) => {
   let suffix = '';
@@ -113,17 +113,8 @@ const makeIssue = (
   if (extra) {
     view.extraTable = makeTable(['Key', 'Value'], Object.entries(extra));
   }
-
-  let components = [];
-  if (componentIDs) {
-    components = componentIDs.map(each => {
-      return {id: each};
-    });
-  }
-
-  return {
+  const ret = {
     fields: {
-      components,
       project: {
         id: projectID,
       },
@@ -132,6 +123,17 @@ const makeIssue = (
       issuetype: {id: issueTypeID},
     },
   };
+  if (componentIDs) {
+    const components = componentIDs.map(each => {
+      return {id: each};
+    });
+    ret.fields.components = components;
+  }
+  if (priorityID) {
+    ret.fields.priority = {id: priorityID};
+  }
+
+  return ret;
 };
 
 const JIRABackend = async (input, req) => {
@@ -146,6 +148,7 @@ const JIRABackend = async (input, req) => {
           projectID: process.env.JIRA_PROJECT_ID,
           issueTypeID: process.env.JIRA_ISSUETYPE_ID,
           componentIDs: process.env.JIRA_COMPONENT_IDS && process.env.JIRA_COMPONENT_IDS.split(',').map(each => each.trim()),
+          priorityID: process.env.JIRA_PRIORITY_ID,
         },
         req
       )
@@ -153,6 +156,7 @@ const JIRABackend = async (input, req) => {
     return result;
   } catch (err) {
     if (err.response) {
+      console.error(err.response);
       const {statusCode, statusMessage} = err.response;
       throw createError(statusCode, statusMessage, err);
     } else {
