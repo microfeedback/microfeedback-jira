@@ -94,7 +94,7 @@ const makeIssue = (
     screenshotURL,
     pkg,
   };
-  const title = `[microfeedback] Feedback${suffix}: "${truncate(body, 25)}"`;
+  const title = `[microfeedback] "${truncate(body, 40)}"`;
   // Format headers as table
   if (req && req.headers) {
     const entries = Object.entries(req.headers).filter(
