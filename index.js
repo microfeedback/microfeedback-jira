@@ -1,8 +1,11 @@
 const assert = require('assert');
+const url = require('url');
+
 const JiraApi = require('jira-client');
 const microfeedback = require('microfeedback-core');
 const mustache = require('mustache');
 const truncate = require('truncate');
+const trim = require('lodash.trim');
 const parseUserAgent = require('ua-parser-js');
 const {createError} = require('micro');
 
@@ -13,8 +16,6 @@ const requiredEnvvars = [
   'JIRA_USERNAME',
   'JIRA_PASSWORD',
   'JIRA_HOST',
-  'JIRA_PROJECT_ID',
-  'JIRA_ISSUETYPE_ID',
 ];
 requiredEnvvars.forEach(each => {
   assert(process.env[each], `${each} not set`);
@@ -136,8 +137,37 @@ const makeIssue = (
   return ret;
 };
 
+const parsePath = pathname => {
+  const result = trim(pathname, '/').split('/');
+  const projectAndIDMissing = createError(400, 'Project ID and Issue Type ID are required in the path');
+  const issueMissing = createError(400, 'Issue Type ID is required in the path');
+  if (result.length === 1) {
+    if (result[0].length === 0) {
+      throw projectAndIDMissing;
+    } else {
+      throw issueMissing;
+    }
+  } else if (result.length > 2) {
+    throw createError(400, 'Too many segments in path');
+  } else {
+    const [projectID, issueTypeID] = result;
+    if (projectID.length === 0) {
+      throw projectAndIDMissing;
+    } else if (issueTypeID.length === 0) {
+      throw issueMissing;
+    }
+    return {projectID, issueTypeID};
+  }
+};
+
 const JIRABackend = async (input, req) => {
   const {body, screenshotURL, extra} = input;
+  // Match /<projectID>/<issueTypeID>/ in the URL
+  const {pathname, query} = url.parse(req.url, true);
+  const {projectID, issueTypeID} = parsePath(pathname);
+  // Component IDs and Priority ID can be passed in query
+  const componentIDs = query && query.componentID && Array.isArray(query.componentID) ? query.componentID : [query.componentID];
+  const priorityID = query && query.priorityID;
   try {
     const result = await jira.addNewIssue(
       makeIssue(
@@ -145,10 +175,10 @@ const JIRABackend = async (input, req) => {
           body,
           screenshotURL,
           extra,
-          projectID: process.env.JIRA_PROJECT_ID,
-          issueTypeID: process.env.JIRA_ISSUETYPE_ID,
-          componentIDs: process.env.JIRA_COMPONENT_IDS && process.env.JIRA_COMPONENT_IDS.split(',').map(each => each.trim()),
-          priorityID: process.env.JIRA_PRIORITY_ID,
+          projectID,
+          issueTypeID,
+          componentIDs,
+          priorityID,
         },
         req
       )
@@ -172,4 +202,7 @@ module.exports = microfeedback(JIRABackend, {
   jiraHost: process.env.JIRA_HOST,
   jiraProjectID: process.env.JIRA_PROJECT_ID,
   jiraIssueTypeID: process.env.JIRA_ISSUETYPE_ID,
+});
+Object.assign(module.exports, {
+  parsePath,
 });

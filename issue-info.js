@@ -23,26 +23,31 @@ async function start(issue) {
   const issuetypeID = fields.issuetype.id;
   const projectName = fields.project.name;
   const projectID = fields.project.id;
+  let url = `/${projectID}/${issuetypeID}?`;
   let ret = `
 # "${projectName}"
-JIRA_PROJECT_ID=${projectID}
+Project ID = ${projectID}
 # "${issuetypeName}"
-JIRA_ISSUETYPE_ID=${issuetypeID}`;
+Issue Type ID = ${issuetypeID}`;
   if (fields.priority && fields.priority.id) {
     const priorityName = fields.priority.name;
     const priorityID = fields.priority.id;
     ret += `
 # "${priorityName}"
-JIRA_PRIORITY_ID=${priorityID}`;
+Priority ID = ${priorityID}`;
+    url += `priorityID=${priorityID}`;
   }
   if (fields.components && fields.components.length > 0) {
     const componentNames = fields.components.map(each => each.name);
     const componentIDs = fields.components.map(each => each.id);
     ret += `
 # ${componentNames.join(',')}
-JIRA_COMPONENT_IDS=${componentIDs.join(',')}`;
+Component IDs = ${componentIDs.join(',')}
+`;
+    url += `&` + componentIDs.map(each => `componentID=${each}`).join('&');
   }
   console.log(ret);
+  console.log(`microfeedback URL = ${url}`);
 }
 
 start(process.argv[2]);
