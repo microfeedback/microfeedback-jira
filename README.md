@@ -3,7 +3,14 @@
 [![Build Status](https://travis-ci.org/microfeedback/microfeedback-jira.svg?branch=master)](https://travis-ci.org/microfeedback/microfeedback-jira)
 [![Greenkeeper badge](https://badges.greenkeeper.io/microfeedback/microfeedback-jira.svg)](https://greenkeeper.io/)
 
+[![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/microfeedback/microfeedback-jira&env=JIRA_USERNAME&env=JIRA_PASSWORD&env=JIRA_HOST)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 An easily-deployable microservice for collecting user feedback as JIRA issues.
+
+## Documentation
+
+https://microfeedback.js.org/backends/microfeedback-jira
 
 ## API
 
@@ -18,13 +25,13 @@ The path must include:
 - `projectID` (required): ID for the project to post issues on.
 - `issueTypeID` (required): ID for the issue types for posted issues.
 
-The JSON payload may contain the following keys:
+The JSON payload contains the following keys:
 
 - `body` (required): The feedback content.
 - `screenshotURL`: Optional URL to a screenshot image.
 - `extra`: Optional object containing optional information to include in the issue.
 
-The foloowing query parameters are optional:
+The following query parameters are optional:
 
 - `componentID`: JIRA component ID to assign to issues. May be passed
 multiple times.
@@ -42,33 +49,42 @@ node issue-info.js FEATURE-1234
 This will print out the URL that you would use to POST to the same
 project (with the same issue type, component(s), and priority).
 
-## Deploy using [now](https://zeit.co/now)
+## Deploy to [now](https://zeit.co/now)
 
-If you already have a [now](https://zeit.co/now) account, you can deploy
-microfeedback-jira to now using either
-
-- **One click deploy** OR
-- **One command deploy**
-
-
-### One click deploy
-
-Click the button below. Enter a zeit API token associated with your
-account and the required environment variables.
-
-[![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/microfeedback/microfeedback-jira&env=JIRA_USERNAME&env=JIRA_PASSWORD&env=JIRA_HOST)
+If you already have a [now](https://zeit.co/now) account and a GitHub
+API token associated with your feedback bot, you can deploy
+microfeedback-jira to now using the `now` CLI.
 
 ### One command deploy
 
-Use the `now` CLI to deploy this repo. Pass in your JIRA credentials and
-required configuration.
-
+Use the `now` CLI to deploy this repo. 
 
 ```
 now microfeedback/microfeedback-jira
 ```
 
-For more detailed setup instructions, see the next section.
+You will be prompted to enter the required environment variables.
+
+## Deploy to Heroku
+
+If you prefer to deploy to Heroku, use the deployment button below or
+deploy with Git.
+
+### One click deploy
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+### Deployment with git
+
+You can also deploy with git and the heroku CLI.
+
+```
+git clone https://github.com/microfeedback/microfeedback-jira.git
+cd microfeedback-jira
+heroku create
+heroku config:set JIRA_USERNAME=<username> JIRA_PASSWORD=<pw> JIRA_HOST=<host>
+git push heroku master
+```
 
 ## Configuration (Environment variables)
 

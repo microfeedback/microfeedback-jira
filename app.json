@@ -1,0 +1,22 @@
+{
+  "name": "microfeedback-jira",
+  "description": "An easily-deployable feedback microservice collects user feedback as JIRA issues",
+  "repository": "https://github.com/microfeedback/microfeedback-jira",
+  "env": {
+    "JIRA_USERNAME": {
+      "description": "Jira username for the user that will post issues",
+      "required": true
+    },
+    "JIRA_PASSWORD": {
+      "description": "Jira password for the user that will post issues",
+      "required": true
+    },
+    "JIRA_HOST": {
+      "description": "Jira host, e.g. 'yourcompany.atlassian.net'",
+      "required": true
+    }
+  },
+  "buildpacks": [
+    {"url": "heroku/nodejs"}
+  ]
+}
