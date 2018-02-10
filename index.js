@@ -80,7 +80,7 @@ Reported via _[{{pkg.name}}|{{&pkg.repository}}] v{{pkg.version}}_.
 mustache.parse(issueTemplate);
 
 const makeIssue = (
-  {body, projectID, issueTypeID, componentIDs, priorityID, screenshotURL, extra},
+  {body, projectID, issueTypeID, componentIDs, priorityID, labels, screenshotURL, extra},
   req
 ) => {
   let suffix = '';
@@ -122,6 +122,7 @@ const makeIssue = (
       summary: title,
       description: mustache.render(issueTemplate, view),
       issuetype: {id: issueTypeID},
+      labels: labels || [],
     },
   };
   if (componentIDs) {
@@ -168,6 +169,7 @@ const JIRABackend = async (input, req) => {
   // Component IDs and Priority ID can be passed in query
   const componentIDs = query && query.componentID && Array.isArray(query.componentID) ? query.componentID : [query.componentID];
   const priorityID = query && query.priorityID;
+  const labels = query && query.label;
   try {
     const result = await jira.addNewIssue(
       makeIssue(
@@ -179,6 +181,7 @@ const JIRABackend = async (input, req) => {
           issueTypeID,
           componentIDs,
           priorityID,
+          labels,
         },
         req
       )
