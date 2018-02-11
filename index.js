@@ -67,6 +67,12 @@ h3. Operating system
 {{&osTable}}
 {{/osTable}}
 
+{{#perspectiveTable}}
+h3. Perspective API
+
+{{&perspectiveTable}}
+{{/perspectiveTable}}
+
 {{#extraTable}}
 h3. Extra information
 
@@ -80,7 +86,18 @@ Reported via _[{{pkg.name}}|{{&pkg.repository}}] v{{pkg.version}}_.
 mustache.parse(issueTemplate);
 
 const makeIssue = (
-  {body, projectID, issueTypeID, componentIDs, priorityID, labels, screenshotURL, extra},
+  {
+    body,
+    projectID,
+    issueTypeID,
+    componentIDs,
+    priorityID,
+    labels,
+    screenshotURL,
+    extra,
+    perspective,
+    akismet,
+  },
   req
 ) => {
   let suffix = '';
@@ -110,9 +127,17 @@ const makeIssue = (
     const osEntries = Object.entries(userAgent.os).filter(e => e[1]);
     view.osTable = makeTable(['Key', 'Value'], osEntries, false);
   }
+  // Format perspective information as table
+  if (perspective) {
+    view.perspectiveTable = makeTable(['Key', 'Value'], Object.entries(perspective));
+  }
   // Format extra information as table
   if (extra) {
     view.extraTable = makeTable(['Key', 'Value'], Object.entries(extra));
+  }
+  const labelList = labels || [];
+  if (akismet && akismet.spam) {
+    labelList.push('spam');
   }
   const ret = {
     fields: {
@@ -122,7 +147,7 @@ const makeIssue = (
       summary: title,
       description: mustache.render(issueTemplate, view),
       issuetype: {id: issueTypeID},
-      labels: labels || [],
+      labels: labelList,
     },
   };
   if (componentIDs) {
@@ -161,7 +186,7 @@ const parsePath = pathname => {
   }
 };
 
-const JIRABackend = async (input, req) => {
+const JIRABackend = async ({input, perspective, akismet}, req) => {
   const {body, screenshotURL, extra} = input;
   // Match /<projectID>/<issueTypeID>/ in the URL
   const {pathname, query} = url.parse(req.url, true);
@@ -176,6 +201,8 @@ const JIRABackend = async (input, req) => {
         {
           body,
           screenshotURL,
+          perspective,
+          akismet,
           extra,
           projectID,
           issueTypeID,

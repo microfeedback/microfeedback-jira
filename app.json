@@ -4,16 +4,32 @@
   "repository": "https://github.com/microfeedback/microfeedback-jira",
   "env": {
     "JIRA_USERNAME": {
-      "description": "Jira username for the user that will post issues",
+      "description": "JIRA username for the user that will post issues",
       "required": true
     },
     "JIRA_PASSWORD": {
-      "description": "Jira password for the user that will post issues",
+      "description": "JIRA password for the user that will post issues",
       "required": true
     },
     "JIRA_HOST": {
-      "description": "Jira host, e.g. 'yourcompany.atlassian.net'",
+      "description": "JIRA host, e.g. 'yourcompany.atlassian.net'",
       "required": true
+    },
+    "AKISMET_API_KEY": {
+      "description": "Akismet API key to use for spam detection",
+      "required": false
+    },
+    "ENABLE_AKISMET": {
+      "description": "Whether to use the Akismet API for syntax checking. Set to 'false' if AKISMET_API_KEY is set but you don't want spam checking.",
+      "required": false
+    },
+    "PERSPECTIVE_API_KEY": {
+      "description": "Perspective API key to use for toxicity scoring",
+      "required": false
+    },
+    "ENABLE_PERSPECTIVE": {
+      "description": "Whether to use the Perspective API for toxicity scoring. Set to 'false' if PERSPECTIVE_API_KEY is set but you don't want toxicity scoring.",
+      "required": false
     }
   },
   "buildpacks": [
