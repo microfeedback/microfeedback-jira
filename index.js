@@ -199,7 +199,10 @@ const JIRABackend = async ({input, perspective, akismet}, req) => {
   // Component IDs and Priority ID can be passed in query
   const componentIDs = query && query.componentID && Array.isArray(query.componentID) ? query.componentID : [query.componentID];
   const priorityID = query && query.priorityID;
-  const labels = query && query.label;
+  let labels = query && query.label;
+  if (labels && !Array.isArray(labels)) {
+    labels = [labels];
+  }
   try {
     const result = await jira.addNewIssue(
       makeIssue(
