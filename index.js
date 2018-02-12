@@ -114,10 +114,15 @@ const makeIssue = (
   const title = `[microfeedback] "${truncate(body, 40)}"`;
   // Format headers as table
   if (req && req.headers) {
-    const entries = Object.entries(req.headers).filter(
-      e => HEADER_WHITELIST.indexOf(e[0]) >= 0
-    );
-    view.headerTable = makeTable(['Header', 'Value'], entries);
+    const linkifiedEntries = [];
+    Object.entries(req.headers).filter(e => HEADER_WHITELIST.indexOf(e[0]) >= 0).forEach(entry => {
+      if (entry[1].startsWith('http')) {
+        linkifiedEntries.push([entry[0], `[${entry[1]}|${entry[1]}]`]);
+      } else {
+        linkifiedEntries.push(entry);
+      }
+    });
+    view.headerTable = makeTable(['Header', 'Value'], linkifiedEntries);
   }
   // Format user agent info as table
   if (req && req.headers && req.headers['user-agent']) {
