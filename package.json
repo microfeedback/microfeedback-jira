@@ -1,7 +1,7 @@
 {
   "name": "microfeedback-jira",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An easily-deployable feedback microservice collects user feedback as JIRA issues",
   "files": [
     "index.js"
