@@ -111,7 +111,9 @@ const makeIssue = (
     screenshotURL,
     pkg,
   };
-  const title = `[microfeedback] "${truncate(body, 40)}"`;
+  // Take first line (Can't have newlines in issue summary) and truncate it if necessary
+  const title = truncate(body.split('\n')[0], 40);
+  const summary = `[microfeedback] "${title}"`;
   // Format headers as table
   if (req && req.headers) {
     const linkifiedEntries = [];
@@ -149,7 +151,7 @@ const makeIssue = (
       project: {
         id: projectID,
       },
-      summary: title,
+      summary,
       description: mustache.render(issueTemplate, view),
       issuetype: {id: issueTypeID},
       labels: labelList,
