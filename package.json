@@ -34,13 +34,13 @@
     "dotenv": "^5.0.0",
     "micro-dev": "^2.2.0",
     "np": "^2.16.1",
-    "xo": "^0.18.2"
+    "xo": "^0.20.3"
   },
   "dependencies": {
     "jira-client": "^6.4.1",
     "lodash.trim": "^4.5.1",
     "micro": "^9.0.0",
-    "microfeedback-core": "^2.0.0",
+    "microfeedback-core": "^3.0.0",
     "mustache": "^2.3.0",
     "truncate": "^2.0.0",
     "ua-parser-js": "^0.7.12"
