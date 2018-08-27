@@ -39,7 +39,7 @@
   "dependencies": {
     "jira-client": "^6.4.1",
     "lodash.trim": "^4.5.1",
-    "micro": "^9.0.0",
+    "micro": "^9.3.3",
     "microfeedback-core": "^3.0.0",
     "mustache": "^2.3.0",
     "truncate": "^2.0.0",
