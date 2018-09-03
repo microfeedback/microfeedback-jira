@@ -34,7 +34,7 @@
     "dotenv": "^5.0.0",
     "micro-dev": "^3.0.0",
     "np": "^3.0.0",
-    "xo": "^0.22.0"
+    "xo": "^0.23.0"
   },
   "dependencies": {
     "jira-client": "^6.4.1",
