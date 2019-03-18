@@ -37,7 +37,7 @@
     "xo": "^0.23.0"
   },
   "dependencies": {
-    "jira-client": "^6.7.0",
+    "jira-client": "^6.7.1",
     "lodash.trim": "^4.5.1",
     "micro": "^9.3.3",
     "microfeedback-core": "^3.0.0",
